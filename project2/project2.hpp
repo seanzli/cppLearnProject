@@ -142,6 +142,27 @@ public:
         return;
     }
 
+    /**
+     * @brief check string is valid or not
+     * 
+     * @param str input string
+     * @param base input base
+     * @param bSigned bool issigned
+     * @return true     is valid
+     * @return false    not valid
+     */
+    bool stringValid(const std::string& str, const unsigned int base, const bool bSigned = false) {
+        if ((str.back() == '+' || str.back() == '-') && bSigned == false)
+            return stringValid(str.substr(0, str.size() - 1), base, true);
+        for (const char& c : str) {
+            if (c == '+' || c == '-')
+                return false;
+            if (char2num(c) >= base)
+                return false;
+        }
+        return true;
+    }
+
 private:
     unsigned m_in_base;
     unsigned m_out_base;
@@ -279,24 +300,5 @@ private:
         return 0;
     }
 
-    /**
-     * @brief check string is valid or not
-     * 
-     * @param str input string
-     * @param base input base
-     * @param bSigned bool issigned
-     * @return true     is valid
-     * @return false    not valid
-     */
-    bool stringValid(const std::string& str, const unsigned int base, const bool bSigned) {
-        if ((str.back() == '+' || str.back() == '-') && bSigned == false)
-            return stringValid(str.substr(0, str.size() - 1), base, true);
-        for (const char& c : str) {
-            if (c == '+' || c == '-')
-                return false;
-            if (char2num(c) >= base)
-                return false;
-        }
-        return true;
-    }
+
 };
