@@ -2,7 +2,7 @@
  * @Description: command template class
  * @Author: Sean
  * @Date: 2021-08-06 11:10:44
- * @LastEditTime: 2021-09-01 21:07:29
+ * @LastEditTime: 2021-09-02 20:27:11
  * @LastEditors: Please set LastEditors
  * @Reference: 
  */
@@ -25,9 +25,9 @@ class Command : public BaseCommand {
     std::function<void(ArgTypes...)> func;
 public:
     explicit Command(std::function<void(ArgTypes...)> _func) : func(_func) {}
-    void operator()(ArgTypes&&... args) {
+    void operator()(ArgTypes... args) {
         if (func)
-            func(std::forward(args)...);
+            func(args...);
     }
 };
 
@@ -39,14 +39,14 @@ public:
         hash.insert(std::make_pair(name, std::shared_ptr<BaseCommand>(new T(func))));
     }
     template<typename... ArgTypes>
-    void execute(const std::string& name, ArgTypes&&... args) {
+    void execute(const std::string& name, ArgTypes... args) {
         std::unordered_map<std::string, std::shared_ptr<BaseCommand>>::const_iterator itr = hash.find(name);
 
         if (itr == hash.end())
             return;
         auto cur_cmd = (Command<ArgTypes...>*)(itr->second.get());
         if (cur_cmd)
-            (*cur_cmd)(std::forward(args)...);
+            (*cur_cmd)(args...);
     }
 
 private:
