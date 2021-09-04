@@ -45,7 +45,7 @@ void func6(int a, FuncTest& t) {
 }
 
 int main() {
-    ManagerTP m(4);
+    ManagerTP m(2);
 
     m.attach("func1", Command<>(func1));
     m.attach("func2", Command<int>(func2));
@@ -61,7 +61,7 @@ int main() {
     m.attach("func8", Command<int>([](int i){
         printf("---\nLambda a = %d \n", i);}));
 
-
+std::cout << "-----------------------start execute\n";
     m.execute("func1");
     m.execute("func2", 1);
     m.execute("func3", 1, 2);
@@ -72,5 +72,6 @@ int main() {
     m.execute("func7");
     m.execute("func8", 30);
 
-    system("Pause");
+    std::this_thread::sleep_for(std::chrono::seconds(8));
+
 }

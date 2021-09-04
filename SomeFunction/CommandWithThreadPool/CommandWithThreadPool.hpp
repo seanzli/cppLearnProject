@@ -25,7 +25,7 @@ public:
      */
     explicit ManagerTP(unsigned size) {
         /// new ThreadPool pointer;
-        threadPool = pThreadPool(new ThreadPool);
+        threadPool = pThreadPool(new ThreadPool(size));
     }
 
     /**

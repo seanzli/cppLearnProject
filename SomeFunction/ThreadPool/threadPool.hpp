@@ -1,10 +1,12 @@
-/*
- * @Description: 
- * @Author: Sean
- * @Date: 2021-09-01 20:42:40
- * @LastEditTime: 2021-09-03 19:07:35
- * @LastEditors: Please set LastEditors
- * @Reference: 
+/**
+ * @file threadPool.hpp
+ * @author Sean 
+ * @brief 
+ * @version 0.1
+ * @date 2021-09-04
+ * 
+ * @copyright Copyright (c) 2021
+ * 
  */
 
 #pragma once
@@ -83,21 +85,23 @@ private:
      * @param size size of thread pool
      */
     void startThread(unsigned size) {
-        m_threads.emplace_back([this](){
-            while (isRunning.load()) {
-                Task task;
-                {
-                    std::unique_lock<std::mutex> lg(m_mutex);
-                    m_cv.wait(lg, [this] {
-                        return !m_tasks.empty() || !isRunning.load();
-                    });
-                    if (!isRunning.load() || m_tasks.empty())
-                        return;
-                    task = std::move(m_tasks.front());
-                    m_tasks.pop();
+        for (/*alread init*/; size > 0; --size) {
+            m_threads.emplace_back([this](){
+                while (isRunning.load()) {
+                    Task task;
+                    {
+                        std::unique_lock<std::mutex> lg(m_mutex);
+                        m_cv.wait(lg, [this] {
+                            return !m_tasks.empty() || !isRunning.load();
+                        });
+                        if (!isRunning.load() || m_tasks.empty())
+                            return;
+                        task = std::move(m_tasks.front());
+                        m_tasks.pop();
+                    }
+                    task();
                 }
-                task();
-            }
-        });
+            });
+        }
     }
 };
