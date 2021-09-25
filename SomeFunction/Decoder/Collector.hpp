@@ -1,3 +1,13 @@
+/**
+ * @file Collector.hpp
+ * @author Sean 
+ * @brief   CollectorManager will create threads for each decoder.
+ * @version 0.1
+ * @date 2021-09-25
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #pragma once
 
 #include <thread>
@@ -13,8 +23,18 @@
 
 class Decoder {
 public:
+    /**
+     * @brief Construct a new Decoder object.
+     * 
+     * @param cv    for notify.
+     */
     Decoder(std::condition_variable& cv) : m_cv(cv) {}
     virtual ~Decoder() {}
+
+    /**
+     * @brief Derive class should override their own decoder method.
+     * 
+     */
     virtual void parser() = 0;
     void notify() {
         m_cv.notify_one();
