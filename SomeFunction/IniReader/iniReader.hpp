@@ -31,7 +31,7 @@ public:
     ~IniReader(){}
 
     bool isValid() {return g_error == ErrorType::NO_ERROR;}
-    bool getValue(const std::string& key, const std::string& key2
+    bool getValue(const std::string& key, const std::string& key2,
                   std::string& value) {
         value = "";
         auto itr = hash.find(key);
