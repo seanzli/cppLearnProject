@@ -14,7 +14,7 @@ void IniReader::decodeFile(const std::string& ini_file) {
 
     // read line by line
     std::string line;
-    while (getline(fin, line)) {
-        
+    while (getline(fin, line)) { ///TODO use interpreter to parse string line
+
     }
 }
