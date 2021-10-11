@@ -77,7 +77,6 @@ int IniReader::decodeProtocol(std::string &line, int &idx, std::string &value) {
 
     if (line[idx] == ']') { // find protocol end sign
         ++idx;
-        std::cout << "protocol =" << value << ";" << std::endl;
         return 1;
     } else {
         return -1;
@@ -92,7 +91,6 @@ int IniReader::decodeValue(std::string &line, int &idx, std::string &value) {
         value.push_back(line[idx++]);
     while (value.size() && value.back() == ' ') // delete end space
         value.pop_back();
-    std::cout << "value =" << value << ";" << std::endl;
     return 3;
 }
 
@@ -104,8 +102,6 @@ int IniReader::decodeKey(std::string &line, int &idx, std::string &value) {
     if (line[idx] == '=') {
         while (value.size() && value.back() == ' ') // delete end space
             value.pop_back();
-
-        std::cout << "key =" << value << ";" << std::endl;
         return 2;
     }
     return -1;
