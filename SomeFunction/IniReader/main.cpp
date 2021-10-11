@@ -4,5 +4,6 @@
 
 int main() {
     IniReader reader("../data/test.ini");
+    reader.getTree();
     return 0;
 }

@@ -43,6 +43,8 @@ public:
         value = itr2->second;
         return true;
     }
+    void getProtocolList();
+    void getTree();
 
 // member value
 private:
@@ -51,5 +53,9 @@ private:
 
 // member function
 private:
-    void decodeFile(const std::string& ini_file);
+    void decodeFile(const std::string &ini_file);
+    int  decodeLine(std::string &line, int &idx, std::string &value);
+    int  decodeProtocol(std::string &line, int &idx, std::string &value);
+    int  decodeKey(std::string &line, int &idx, std::string &value);
+    int  decodeValue(std::string &line, int &idx, std::string &value);
 };
