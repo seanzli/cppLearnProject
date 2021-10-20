@@ -4,6 +4,11 @@
 #include <mutex>
 #include <vector>
 
+/**
+ * @brief output buffer
+ * 
+ * @tparam T  // data type
+ */
 template<typename T>
 class Buffer {
 public:

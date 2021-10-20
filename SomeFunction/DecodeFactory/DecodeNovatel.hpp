@@ -4,8 +4,12 @@
 
 #include "buffer.hpp"
 
-using Obs = int; // for test;
 
+/**
+ * @brief Specific of decoder
+ * 
+ */
+using Obs = int; // Data type = for test;
 class DecodeNovatel : public DecodeBase {
 public:
     void decodeChar(Container& que) {

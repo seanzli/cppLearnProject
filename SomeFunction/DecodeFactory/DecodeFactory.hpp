@@ -11,8 +11,11 @@ enum class DecoderType {
     RTCMv3,
 };
 
+/**
+ * @brief Factory to create Decoder pointer
+ * 
+ */
 class Factory {
-
 public:
     Factory() {}
     ~Factory() {}
