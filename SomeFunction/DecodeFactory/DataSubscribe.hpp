@@ -35,7 +35,7 @@ public:
         }
     }
 
-    const Buffer<T>& getBufferReference() {
+    Buffer<T>& getBufferReference() {
         return m_data;
     }
 

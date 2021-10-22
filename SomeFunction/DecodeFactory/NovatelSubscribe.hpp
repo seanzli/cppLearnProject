@@ -6,8 +6,8 @@
 class NovatelSubscribe : public DataSubscribe {
 public:
     void getData(BascDataTopic* dataTopic) { 
-        // auto buffer = dynamic_cast<DataTopic<OBS>*>(dataTopic)->getBufferReference();
-        // std::cout << buffer.size() << "\n"; // for test
-        std::cout << "novatel getData\n";
+
+        auto topic = dynamic_cast<DataTopic<OBS>*>(dataTopic);
+        auto cur = topic->getBufferReference()[0];
     }
 };
