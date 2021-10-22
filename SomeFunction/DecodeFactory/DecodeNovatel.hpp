@@ -2,23 +2,24 @@
 
 #include "DecodeBase.hpp"
 
-#include "buffer.hpp"
-
-
 /**
  * @brief Specific of decoder
  * 
  */
-using Obs = int; // Data type = for test;
-class DecodeNovatel : public DecodeBase {
+using OBS = int; // Data type = for test;
+
+class NovatelDecoder : public BaseDecode {
 public:
-    void decodeChar(Container& que) {
-        que.clear();
+    virtual ~NovatelDecoder(){}
+    virtual unsigned decodeChar(Container& que) {
+        m_data.notify();
+        return 1;
     }
 
-    void getData(std::deque<Obs>& que) {
-        m_data.swap(que);
+    virtual void subscribe(std::shared_ptr<DataSubscribe> sub) {
+        m_data.attach(sub);
     }
+
 private:
-    Buffer<Obs> m_data;
+    DataTopic<OBS> m_data;
 };

@@ -2,18 +2,20 @@
 
 #include <deque>
 
-#include "buffer.hpp"
+#include "Buffer.hpp"
+#include "DataSubscribe.hpp"
 
 // decode char container
-using Container = std::deque<char>;
+using Container = Buffer<char>;
 
 /**
  * @brief decoder base template
  * 
  */
-class DecodeBase {
+class BaseDecode {
 public:
-    DecodeBase() {}
-    virtual ~DecodeBase() {}
-    virtual void decodeChar(Container& que) = 0;
+    BaseDecode() {}
+    virtual ~BaseDecode(){}
+    virtual unsigned decodeChar(Container& que) = 0;
+    virtual void subscribe(std::shared_ptr<DataSubscribe> sub) = 0;
 };

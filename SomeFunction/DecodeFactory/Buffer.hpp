@@ -15,6 +15,11 @@ public:
     Buffer() {}
     ~Buffer() {}
 
+    template<typename InputIterator>
+    Buffer(InputIterator _first, InputIterator _last) {
+        m_data = std::deque<T>(_first, _last);
+    }
+
     bool empty() {
         std::lock_guard<std::mutex> lg(m_mutex);
         return m_data.empty();
@@ -30,11 +35,19 @@ public:
         m_data.push_back(val);
     }
 
-    T pop_front() {
+    void pop_back() {
         std::lock_guard<std::mutex> lg(m_mutex);
-        T val = m_data.front();
+        m_data.pop_back();
+    }
+
+    void pop_front() {
+        std::lock_guard<std::mutex> lg(m_mutex);
         m_data.pop_front();
-        return val;
+    }
+
+    void pop_front(unsigned size) {
+        std::lock_guard<std::mutex> lg(m_mutex);
+        m_data.erase(m_data.begin(), m_data.begin() + size);
     }
 
     void push_front(std::vector<T>& vec) {
@@ -50,6 +63,18 @@ public:
     void swap(std::deque<T>& que) {
         std::lock_guard<std::mutex> lg(m_mutex);
         m_data.swap(que);
+    }
+
+    const T& operator[](unsigned int idx) {
+        return m_data[idx];
+    }
+    
+    auto begin() { return m_data.begin(); }
+    auto end() {return m_data.end(); }
+
+    template<typename InputIterator, typename DataIterator>
+    void insert(DataIterator _pos, InputIterator _first, InputIterator _last) {
+        m_data.insert(_pos, _first, _last);
     }
 
 private:
