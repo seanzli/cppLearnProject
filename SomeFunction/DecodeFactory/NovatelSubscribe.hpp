@@ -8,6 +8,6 @@ public:
     void getData(BascDataTopic* dataTopic) { 
 
         auto topic = dynamic_cast<DataTopic<OBS>*>(dataTopic);
-        auto cur = topic->getBufferReference()[0];
+        topic->getBufferReference().push_back(OBS{});
     }
 };
