@@ -34,7 +34,7 @@ public:
     ThreadPool(unsigned size = 4) {
         size = std::min(size, THREAD_POOL_MAX);
         if (size == 0)
-            throw std::runtime_error("thread pool max size should large than 0\n");
+            size = 4;
         isRunning.store(true);
         startThread(size);
     }
