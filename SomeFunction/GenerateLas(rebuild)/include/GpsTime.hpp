@@ -42,12 +42,16 @@ struct GpsTime {
 
     // operator overload
     GpsTime operator+(const GpsTime& in) {
-        return GpsTime(this->sec_integer + in.sec_integer,
-                        this->sec_decimal + in.sec_decimal);
+        double integer = static_cast<unsigned long long>(this->sec_decimal + in.sec_decimal);
+        return GpsTime(this->sec_integer + in.sec_integer + integer,
+                        this->sec_decimal + in.sec_decimal - integer);
     }
     GpsTime operator-(const GpsTime& in) {
-        return GpsTime(this->sec_integer - in.sec_integer,
+        if (this->sec_decimal - in.sec_decimal > 0)
+            return GpsTime(this->sec_integer - in.sec_integer,
                         this->sec_decimal - in.sec_decimal);
+        return GpsTime(this->sec_integer - in.sec_integer - 1,
+                        this->sec_decimal - in.sec_decimal + 1);
     }
 
     bool operator<(const GpsTime& in) {
