@@ -8,6 +8,7 @@
  * @copyright Copyright (c) 2021
  * 
  */
+#pragma once
 
 #include "../Command/Command.hpp"
 #include "../ThreadPool/threadPool.hpp"
