@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
         manager.execute("func1");
     });
 
-    auto th = std::thread([&]{timer.run();});
+    auto th = timer.run();
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
     timer.terminate();

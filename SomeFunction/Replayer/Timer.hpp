@@ -22,7 +22,7 @@ public:
         DLOG(INFO) << "add func, list size() = " << m_list.size();
     }
 
-    void run() {start();}
+    auto run() {return std::thread([&]{start();});}
 
     void terminate() {m_running.store(false);}
 
