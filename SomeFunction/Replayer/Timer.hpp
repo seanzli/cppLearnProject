@@ -3,8 +3,7 @@
 #include <chrono>
 #include <atomic>
 #include <list>
-
-#include "../CommandWithThreadPool/CommandWithThreadPool.hpp"
+#include <future>
 
 #include <glog/logging.h>
 
@@ -22,9 +21,13 @@ public:
         DLOG(INFO) << "add func, list size() = " << m_list.size();
     }
 
-    auto run() {return std::thread([&]{start();});}
+    void run() {m_run_thread =  std::thread([&]{start();});}
 
-    void terminate() {m_running.store(false);}
+    void terminate() {
+        m_running.store(false);
+        if (m_run_thread.joinable())
+            m_run_thread.join();
+    }
 
 private:
     Timer() {}
@@ -33,6 +36,7 @@ private:
     std::atomic<bool> m_running{true};
     unsigned m_cycle_millisec = 1000; // unit = ms;
     std::list<std::function<void()>> m_list;
+    std::thread m_run_thread;
 
     void start() {
         while (m_running.load()) {
