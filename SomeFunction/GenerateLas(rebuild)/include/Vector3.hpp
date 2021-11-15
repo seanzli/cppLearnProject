@@ -33,8 +33,12 @@ public:
         return op2 * op1;
     }
 
-    double mod(const vec3& op) const {
-        return sqrt(op.x * op.x + op.y * op.y + op.z * op.z);
+    vec3 operator/ (const double op) const {
+        return *this * (1.0 / op);
+    }
+
+    friend vec3 operator/(const double op1, const vec3& op2) {
+        return vec3(op1 / op2.x, op1 / op2.y, op1 / op2.z);
     }
 
 public:
