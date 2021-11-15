@@ -11,23 +11,29 @@ public:
 
     ~vec3() {}
 
-    vec3 operator+(const vec3& op) {
+    vec3 operator+(const vec3& op) const {
         return vec3(this->x + op.x, 
                     this->y + op.y,
                     this->z + op.z);
     }
 
-    vec3 operator-(const vec3& op) {
-        return vec3(this->x - op.x, 
-                    this->y - op.y,
-                    this->z - op.z);
+    vec3 operator-(const vec3& op) const {
+        return *this + (-1.0) * op;
     }
 
-    double mod() {
+    double mod() const {
         return sqrt(x*x + y*y + z*z);
     }
 
-    double mod(const vec3& op) {
+    vec3 operator* (const double op) const{
+        return vec3(this->x * op, this->y * op, this->z * op);
+    }
+
+    friend vec3 operator*(const double op1, const vec3& op2) {
+        return op2 * op1;
+    }
+
+    double mod(const vec3& op) const {
         return sqrt(op.x * op.x + op.y * op.y + op.z * op.z);
     }
 
