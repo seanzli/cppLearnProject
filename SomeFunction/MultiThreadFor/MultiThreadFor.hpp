@@ -23,18 +23,19 @@ public:
         std::condition_variable cv;
         std::vector<std::thread> th_vec;
         std::atomic<bool> running{true};
-        size_t cur = 0;
+        volatile size_t cur = 0;
         for (unsigned i = 0; i < thread_num; ++i) {
             th_vec.emplace_back(
                 [&] {
                     while (cur < size && running.load()) {
                         std::unique_lock<std::mutex> ul(mutex);
-                        cv.wait(ul, [&]{return !running.load() || cur < size;});
+                        cv.wait(ul, [&]{return running.load();});
+                        if (!running.load())
+                            return;
                         size_t idx = cur++;
                         cv.notify_one();
                         *(_out_itr + idx) = fun((*(_in_itr + idx))...);
                     }
-                    running.store(false);
                     cv.notify_all();
                 }
             );
@@ -51,7 +52,7 @@ public:
     void run_mutex(Func fun, size_t size, OutIterator _out_itr, InIterator... _in_itr) {
         std::mutex mutex;
         std::vector<std::thread> th_vec;
-        size_t cur = 0;
+        volatile size_t cur = 0;
         for (unsigned i = 0; i < thread_num; ++i) {
             th_vec.emplace_back(
                 [&] {
