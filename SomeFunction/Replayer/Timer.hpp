@@ -15,7 +15,6 @@ public:
      * 
      * @return Timer& 
      */
-    /// TODO: maybe should synchronized with system time?
     static Timer& getInstance() {
         static Timer m_timer;
         return m_timer;

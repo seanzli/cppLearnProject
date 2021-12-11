@@ -246,7 +246,6 @@ private:
      * @param base 
      * @return std::string 
      */
-    /// TODO add and sub function may could marge to one function
     std::string sub(const std::string& sub1, const std::string& sub2, const unsigned int base) {
         std::string res = "";
         int flag = 0; //borrow  0 or -1;

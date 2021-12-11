@@ -17,7 +17,7 @@ void IniReader::decodeFile(const std::string& ini_file) {
     std::string cur_protocol_str = "";
     std::string line;
     std::string key;
-    while (getline(fin, line)) { ///TODO use interpreter to parse string line
+    while (getline(fin, line)) {
         std::string value;
         int idx = 0;
         int flag = 0;
