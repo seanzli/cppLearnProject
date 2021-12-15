@@ -10,24 +10,24 @@ class uVector {
 
 private:
     size_t m_size = 0;
-    size_t m_capture = 0;
+    size_t m_capacity = 0;
     T* m_data = nullptr;
 
 public:
     uVector() = default;
     uVector(size_t _size)
         : m_size(_size)
-        , m_capture(_size)
+        , m_capacity(_size)
     {
-        m_data = (T*)(malloc(sizeof(T) * m_capture));
+        m_data = (T*)(malloc(sizeof(T) * m_capacity));
         setVal(T{});
     }
 
     uVector(size_t _size, T&& val)
         : m_size(_size)
-        , m_capture(_size)
+        , m_capacity(_size)
     {
-        m_data = (T*)(malloc(sizeof(T) * m_capture));
+        m_data = (T*)(malloc(sizeof(T) * m_capacity));
         setVal(val);
     }
 
@@ -47,7 +47,7 @@ public:
     }
 
     void push_back(const T& val) {
-        if (m_size == m_capture) {
+        if (m_size == m_capacity) {
             getNewMemory();
             push_back(val);
         } else {
@@ -86,11 +86,11 @@ private:
     }
 
     void getNewMemory() {
-        T* new_buffer = (T*)(malloc(m_capture * 2 * sizeof(T)));
+        T* new_buffer = (T*)(malloc(m_capacity * 2 * sizeof(T)));
         memcpy(new_buffer, m_data, sizeof(T) * m_size);
         delete m_data;
         m_data = new_buffer;
-        m_capture = 2 * m_capture;
+        m_capacity = 2 * m_capacity;
     }
 
 };
