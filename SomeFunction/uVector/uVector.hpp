@@ -146,10 +146,9 @@ public:
     reference_type emplace_back(ArgsT&&... args) {
         if (this->m_size < this->m_capacity) {
             /// memory is enough, m_data[m_size] can not be nullptr
-            size_type k = this->m_size;
-            ::new(&this->m_data[k]) ValueT(::std::forward<ArgsT>(args)...);
+            ::new(&this->m_data[m_size]) ValueT(::std::forward<ArgsT>(args)...);
             ++this->m_size;
-            return this->m_data[k];
+            return this->m_data[m_size - 1];
         }
 
         /// memory is not enough, need to allocate more memory
@@ -182,7 +181,7 @@ public:
         this->m_size = new_size;
         this->m_capacity = new_capacity;
 
-        return this->m_data[new_size];
+        return this->m_data[new_size - 1];
     }
 
 private:
