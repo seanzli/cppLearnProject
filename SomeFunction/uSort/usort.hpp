@@ -38,6 +38,16 @@
 //    return;
 //}
 
+/**
+ * merge function
+ * @tparam T        vector value_type
+ * @tparam Cmp      compare function type
+ * @param in        input vector<T>
+ * @param left      left part start index
+ * @param mid       left part end index, right part should start at mid + 1
+ * @param right     right part end index
+ * @param fun       compare function, should return bool
+ */
 template<typename T, typename Cmp>
 void merge(std::vector<T>& in, size_t left, size_t mid, size_t right, Cmp& fun) {
     std::vector<T> cur;
@@ -57,6 +67,15 @@ void merge(std::vector<T>& in, size_t left, size_t mid, size_t right, Cmp& fun) 
     }
 }
 
+/**
+ * sort vector
+ * @tparam T            vector value type
+ * @tparam Cmp          compare function type
+ * @param in            input vector<T>
+ * @param left          start index
+ * @param right         end index
+ * @param fun           compare function, should return bool
+ */
 template<typename T, typename Cmp>
 void sort(std::vector<T>& in, size_t left, size_t right, Cmp& fun) {
     if (left >= right)

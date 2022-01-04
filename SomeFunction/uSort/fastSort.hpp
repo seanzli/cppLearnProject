@@ -1,6 +1,14 @@
 #include <vector>
 #include <functional>
-
+/**
+ * sort fast sort a array
+ * @tparam T            vector value_type
+ * @tparam Cmp          compare function type
+ * @param in            input vector<T>
+ * @param c_left        start index
+ * @param c_right       end index
+ * @param cmp           compare function, should return bool
+ */
 template<typename T, typename Cmp>
 void sort(std::vector<T>& in,
           const size_t c_left,
