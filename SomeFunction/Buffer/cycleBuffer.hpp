@@ -1,8 +1,9 @@
 #include <memory>
 
+#include <shared_mutex>
+
 namespace CycleBuffer {
 
-    ///TODO: try read write lock, in case multi-thread;
 class cycleBuffer {
 public:
     cycleBuffer(const size_t size = 1024) : m_size(size){
@@ -21,6 +22,7 @@ public:
     void write(uint8_t* ptr, const size_t size) {
         if (size > m_size)
             return;
+        std::unique_lock<std::shared_mutex> lg(m_shared_mutex);
         auto rest = restSize();
         if (rest >= size) {
             memcpy(m_write, ptr, size);
@@ -34,6 +36,7 @@ public:
     }
 
     void read(uint8_t* reader, uint8_t* ptr) {
+        std::shared_lock<std::shared_mutex> lg(m_shared_mutex);
         if (reader < m_write) {
             memcpy(ptr, reader, m_write - reader);
         } else {
@@ -49,6 +52,9 @@ private:
     uint8_t* m_buffer;
     uint8_t* m_tail;
     uint8_t* m_write;
+
+    mutable std::shared_mutex m_shared_mutex;
+
 private:
     size_t restSize() const {
         return m_tail - m_write;
