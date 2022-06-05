@@ -1,41 +1,26 @@
 #ifndef _SOCKET_CLIENT_
 #define _SOCKET_CLIENT_
 
-#include <sys/socket.h>
-#include <arpa/inet.h>
-
 #include <string>
 #include <future>
 #include <functional>
 
+#include "socketBasic.hpp"
+
 namespace SocketClass {
-    enum class SocketType {
-        UDP,
-        TCP,
-        UNKNOWN
-    };
-    class socketClient{
+
+    class SocketClient{
     public:
-        explicit socketClient(const SocketType type,
+        explicit SocketClient(const SocketType type,
                               const std::string& ip,
                               const int& port,
                               std::function<void(std::string)> call_back = [](std::string){}) {
-            switch (type) {
-                case SocketType::TCP: m_socket = socket(AF_INET, SOCK_STREAM, 0); break;
-                case SocketType::UDP: m_socket = socket(AF_INET, SOCK_DGRAM,0); break;
-                default:
-                    m_socket = -1;
-            }
-
-            memset(&client_addr, 0, sizeof(client_addr));
-            client_addr.sin_family = AF_INET;
-            client_addr.sin_port = htons(port);
-            client_addr.sin_addr.s_addr = inet_addr(ip.c_str());
-
+            m_socket = getSocketFd(type);
+            client_addr = initSocket(ip, port);
             m_call_back = call_back;
         }
 
-        ~socketClient() {
+        ~SocketClient() {
             disconnect();
         }
 
