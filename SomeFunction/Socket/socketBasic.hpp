@@ -37,9 +37,14 @@ namespace SocketClass {
     public:
         explicit SocketConnect(const SocketType type,
                                const std::string& ip,
-                               const int& port) {
+                               const unsigned short & port) {
             m_socket = getSocketFd(type);
             m_sock_connect = initSocket(ip, port);
+        }
+
+        explicit SocketConnect(int socket_fp, sockaddr_in socket) {
+            m_socket = socket_fp;
+            m_sock_connect = socket;
         }
 
         virtual ~SocketConnect() {
