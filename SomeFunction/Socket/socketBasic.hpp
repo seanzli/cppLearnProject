@@ -78,17 +78,10 @@ namespace SocketClass {
             m_send_cv.notify_one();
         }
 
-        virtual std::string recv() {
-            std::string msg;
-            {
-                std::unique_lock<std::mutex> lg(m_recv_mutex);
-                m_recv_cv.wait(lg, [&]{
-                    return (!m_recv_que.empty() || !m_running.load());
-                });
-                msg = m_recv_que.front();
-                m_recv_que.pop();
-            }
-            return msg;
+
+
+        void registerCallBack(std::function<void(std::string)> call_back) {
+            m_call_back = call_back;
         }
 
 
@@ -100,6 +93,7 @@ namespace SocketClass {
         std::queue<std::string> m_send_que, m_recv_que;
         std::mutex m_send_mutex, m_recv_mutex;
         std::condition_variable m_send_cv, m_recv_cv;
+        std::function<void(std::string)> m_call_back = [](std::string){};
 
     protected:
         void start() {
@@ -151,6 +145,20 @@ namespace SocketClass {
                 }
                 delete[] buffer;
             });
+        }
+
+        virtual std::string recv() {
+            std::string msg;
+            {
+                std::unique_lock<std::mutex> lg(m_recv_mutex);
+                m_recv_cv.wait(lg, [&]{
+                    return (!m_recv_que.empty() || !m_running.load());
+                });
+                msg = m_recv_que.front();
+                m_recv_que.pop();
+            }
+            m_call_back(msg);
+            return msg;
         }
     };
 }
