@@ -1,84 +1,44 @@
-#include <queue>
 #include <vector>
+#include <algorithm>
+#include <numeric>
 using namespace std;
 class Solution {
-    struct Pos {
-        int x;
-        int y;
-        int s;
-        Pos(int _x, int _y, int _s) : x(_x), y(_y), s(_s) {}
-        Pos right() {
-            return Pos(x, y + 1, s);
-        }
-        Pos down() {
-            return Pos(x + 1, y, s);
-        }
-        Pos rotate() {
-            return Pos(x, y, s^3);
-        }
-    };
-    // 1(01) = horizontal, 2(10) = vertical
-    vector<vector<int>> m_state;
-    int m_size;
-    bool stateCheck(const vector<vector<int>>& grid, const Pos& pos) {
-        if (pos.x == m_size || pos.y == m_size)
-            return false;
-        if ((m_state[pos.x][pos.y] & pos.s) > 0 || grid[pos.x][pos.y] == 1)
-            return false;
-        if (pos.s == 1) {
-            if (pos.y + 1 == m_size || grid[pos.x][pos.y + 1] == 1)
-                return false;
-        } else {
-            if (pos.x + 1 == m_size || grid[pos.x + 1][pos.y] == 1)
-                return false;
-        }
-        return true;
-    }
-    bool canRot(const vector<vector<int>>& grid, const Pos& pos) {
-        if (pos.x + 1 == m_size || pos.y + 1 == m_size)
-            return false;
-        if (grid[pos.x + 1][pos.y + 1] == 1)
-            return false;
-        return true;
-    }
-    void mark(const Pos& pos) {
-        m_state[pos.x][pos.y] |= pos.s; 
-    }
 public:
-    int minimumMoves(vector<vector<int>>& grid) {
-        m_size = grid.size();
-        m_state = vector<vector<int>>(m_size, vector<int>(m_size, 0));
-        m_state[0][0] = 0x01;
-        queue<Pos> que;
-        que.push(Pos(0, 0, 0x01));
-        int res = 0;
-        while (!que.empty()) {
-            int size = que.size();
-            for (int i = 0; i < size; ++i) {
-                auto cur = que.front(); que.pop();
-                if (cur.x == m_size - 1 && cur.y == m_size - 2 && cur.s == 0x01)
-                    return res;
-                auto right = cur.right();
-                if (stateCheck(grid, right)) {
-                    que.push(right);
-                    mark(right);
-                }
-                auto down = cur.down();
-                if (stateCheck(grid, down)) {
-                    que.push(down);
-                    mark(down);
-                }
-                if (canRot(grid, cur)) {
-                    auto rot = cur.rotate();
-                    if (stateCheck(grid, rot)) {
-                        que.push(rot);
-                        mark(rot);
-                    }
-                }
-                
+    int minOperations(vector<int>& nums1, vector<int>& nums2) {
+        int sum1 = accumulate(nums1.begin(), nums1.end(), 0);
+        int sum2 = accumulate(nums2.begin(), nums2.end(), 0);
+        if (sum1 == sum2)
+            return 0;
+        int dif = 0;
+        if (sum1 > sum2) {
+            swap(nums1, nums2); // nums1 < nums2
+            dif = sum1 - sum2;
+        } else 
+            dif = sum2 - sum1;
+        
+        sort(nums1.begin(), nums1.end());
+        sort(nums2.begin(), nums2.end(), [](const int& a, const int& b) {return a > b;});
+        int idx1 = 0, idx2 = 0, res = 0;
+        while (idx1 < nums1.size() && idx2 < nums2.size() && dif > 0) {
+            int dif1 = 6 - nums1[idx1];
+            int dif2 = nums2[idx2] - 1;
+            if (dif1 > dif2) {
+                ++idx1;
+                dif -= dif1;
+            } else {
+                ++idx2;
+                dif -= dif2;
             }
             ++res;
         }
-        return -1;
+        while (idx1 < nums1.size() && dif > 0) {
+            dif -= (6 - nums1[idx1++]);
+            ++res;
+        }
+        while (idx2 < nums2.size() && dif > 0) {
+            dif -= (nums2[idx2++] - 1);
+            ++res;
+        }
+        return dif > 0 ? -1 : res;
     }
 };
