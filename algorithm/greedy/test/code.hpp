@@ -16,29 +16,19 @@ public:
         } else 
             dif = sum2 - sum1;
         
-        sort(nums1.begin(), nums1.end());
-        sort(nums2.begin(), nums2.end(), [](const int& a, const int& b) {return a > b;});
-        int idx1 = 0, idx2 = 0, res = 0;
-        while (idx1 < nums1.size() && idx2 < nums2.size() && dif > 0) {
-            int dif1 = 6 - nums1[idx1];
-            int dif2 = nums2[idx2] - 1;
-            if (dif1 > dif2) {
-                ++idx1;
-                dif -= dif1;
-            } else {
-                ++idx2;
-                dif -= dif2;
-            }
-            ++res;
+        vector<int> count(6, 0);
+        for (auto& itr : nums1)
+            ++count[6 - itr];
+        for (auto& itr : nums2)
+            ++count[itr - 1];
+        
+        int res = 0;
+        for (int i = 5; i >= 0 && dif > 0; --i) {
+            if (i * count[i] > dif)
+                return res + (dif + i - 1) / i;
+            res += count[i];
+            dif -= i * count[i];
         }
-        while (idx1 < nums1.size() && dif > 0) {
-            dif -= (6 - nums1[idx1++]);
-            ++res;
-        }
-        while (idx2 < nums2.size() && dif > 0) {
-            dif -= (nums2[idx2++] - 1);
-            ++res;
-        }
-        return dif > 0 ? -1 : res;
+        return -1;
     }
 };
