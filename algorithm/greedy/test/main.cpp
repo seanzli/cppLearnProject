@@ -4,8 +4,11 @@
 int main()
 {
     Solution solution;
-    vector<int> num1 = {5,6,4,3,1,2};
-    vector<int> num2 = {6,3,3,1,4,5,3,4,1,3,4};
-    std::cout << solution.minOperations(num1,num2) << "\n";
+    vector<int> num1 = {12,24,8,32};
+    vector<int> num2 = {13,25,32,11};
+    auto out = solution.advantageCount(num1,num2);
+    for (const auto& itr : out) {
+        std::cout << itr << ",";
+    }
     return 0;
 }

@@ -1,34 +1,31 @@
 #include <vector>
 #include <algorithm>
 #include <numeric>
+
 using namespace std;
+
 class Solution {
 public:
-    int minOperations(vector<int>& nums1, vector<int>& nums2) {
-        int sum1 = accumulate(nums1.begin(), nums1.end(), 0);
-        int sum2 = accumulate(nums2.begin(), nums2.end(), 0);
-        if (sum1 == sum2)
-            return 0;
-        int dif = 0;
-        if (sum1 > sum2) {
-            swap(nums1, nums2); // nums1 < nums2
-            dif = sum1 - sum2;
-        } else 
-            dif = sum2 - sum1;
-        
-        vector<int> count(6, 0);
-        for (auto& itr : nums1)
-            ++count[6 - itr];
-        for (auto& itr : nums2)
-            ++count[itr - 1];
-        
-        int res = 0;
-        for (int i = 5; i >= 0 && dif > 0; --i) {
-            if (i * count[i] > dif)
-                return res + (dif + i - 1) / i;
-            res += count[i];
-            dif -= i * count[i];
+    vector<int> advantageCount(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> idx1(nums1.size(), 0);
+        vector<int> idx2(nums2.size(), 0);
+        iota(idx1.begin(), idx1.end(), 0);
+        iota(idx2.begin(), idx2.end(), 0);
+        // increase sequence -> idx
+        sort(idx1.begin(), idx1.end(), [&] (int a, int b) {return nums1[a] < nums1[b];});
+        sort(idx2.begin(), idx2.end(), [&] (int a, int b) {return nums2[a] < nums2[b];});
+
+        vector<int> res(nums1.size(), 0);
+        int left = 0, right = nums1.size() - 1;
+        for (int i = 0; i < res.size(); ++i) {
+            if (nums1[idx1[i]] > nums2[idx2[left]]) { // large than nums2, write nums2
+                res[idx2[left]] = nums1[idx1[i]];
+                ++left;
+            } else {
+                res[idx2[right]] = nums1[idx1[i]];  // else use the largest nums2
+                --right;
+            }
         }
-        return -1;
+        return std::move(res);
     }
 };
