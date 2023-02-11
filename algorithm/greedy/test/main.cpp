@@ -4,11 +4,9 @@
 int main()
 {
     Solution solution;
-    vector<int> num1 = {12,24,8,32};
+    vector<int> num1 = {1,1,0,0,1};
     vector<int> num2 = {13,25,32,11};
-    auto out = solution.advantageCount(num1,num2);
-    for (const auto& itr : out) {
-        std::cout << itr << ",";
-    }
+    auto out = solution.maxChunksToSorted(num1);
+    std::cout << out << "\n";
     return 0;
 }
