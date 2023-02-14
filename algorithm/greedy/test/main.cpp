@@ -4,9 +4,8 @@
 int main()
 {
     Solution solution;
-    vector<int> num1 = {1,1,0,0,1};
-    vector<int> num2 = {13,25,32,11};
-    auto out = solution.maxChunksToSorted(num1);
+    vector<vector<int>> sta = {{10,60},{20,30},{30,30},{60,40}};
+    auto out = solution.minRefuelStops(100, 10, sta);
     std::cout << out << "\n";
     return 0;
 }
