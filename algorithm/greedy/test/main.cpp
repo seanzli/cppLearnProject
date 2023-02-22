@@ -4,8 +4,11 @@
 int main()
 {
     Solution solution;
-    vector<vector<int>> sta = {{10,60},{20,30},{30,30},{60,40}};
-    auto out = solution.minRefuelStops(100, 10, sta);
-    std::cout << out << "\n";
+    vector<int> num = {5,2,4,6,6,3};
+    vector<vector<int>> que = {{12,4},{8,1},{6,3}};
+    auto out = solution.maximizeXor(num, que);
+    for (auto itr : out) {
+        std::cout << itr << "\n";
+    }
     return 0;
 }
