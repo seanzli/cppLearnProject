@@ -1,48 +1,27 @@
-#include <vector>
-#include <queue>
 #include <unordered_map>
-#include <unordered_set>
+#include <algorithm>
+#include <numeric>
 
 using namespace std;
-
 class Solution {
-    int nextTime(int cur, int next, int change) {
-        int t = cur % (2 * change);
-        if (t < change) // 
-            return cur + next;
-        return cur + (2 * change) - t + next;
-    }
 public:
-    int secondMinimum(int n, vector<vector<int>>& edges, int time, int change) {
-        unordered_map<int, unordered_set<int>> hash;
-        vector<vector<int>> c(n + 1, vector<int>(2,INT32_MAX)); // only reach twice
-        for (const auto& itr : edges) {
-            hash[itr[0]].insert(itr[1]);
-            hash[itr[1]].insert(itr[0]);
+    int minSubarray(vector<int>& nums, int p) {
+        int x = 0;
+        for (auto num : nums) {
+            x = (x + num) % p;
         }
-        queue<pair<int, int>> que; // {node ,step}
-        que.push({1, 0});
-        while (!que.empty() && c[n][1] == INT32_MAX) {
-            int size = que.size();
-            for (int i = 0; i < size; ++i) {
-                auto cur = que.front(); que.pop();
-                for (const auto& itr : hash[cur.first]) {
-                    int step = cur.second + 1;
-                    if (step < c[itr][0]) {
-                        c[itr][1] = c[itr][0];
-                        c[itr][0] = step;
-                        que.push({itr, step});
-                    } else if (step > c[itr][0] && step < c[itr][1]) {
-                        c[itr][1] = step;
-                        que.push({itr, step});
-                    }
-                }
+        if (x == 0) {
+            return 0;
+        }
+        unordered_map<int, int> index;
+        int y = 0, res = nums.size();
+        for (int i = 0; i < nums.size(); i++) {
+            index[y] = i; // f[i] mod p = y，因此哈希表记录 y 对应的下标为 i
+            y = (y + nums[i]) % p;
+            if (index.count((y - x + p) % p) > 0) {
+                res = min(res, i - index[(y - x + p) % p] + 1);
             }
         }
-        int res = 0;
-        for (int i = 0; i < c[n][1]; ++i) {
-            res = nextTime(res, time, change);
-        }
-        return res;
+        return res == nums.size() ? -1 : res;
     }
 };

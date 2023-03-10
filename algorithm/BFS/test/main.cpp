@@ -4,8 +4,8 @@
 int main()
 {
     Solution solution;
-    vector<vector<int>> edge = {{1,2}};
-    auto out = solution.secondMinimum(2, edge, 3, 2);
+    vector<int> nums = {3,1,4,2};
+    auto out = solution.minSubarray(nums, 6);
     std::cout << out << "\n";
     return 0;
 }
