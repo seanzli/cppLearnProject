@@ -4,8 +4,8 @@
 int main()
 {
     Solution solution;
-    vector<int> nums = {3,1,4,2};
-    auto out = solution.minSubarray(nums, 6);
+    vector<vector<int>> nums = {{0,0,1,1,1,0,1,1,1,0,1},{1,1,1,1,0,1,0,1,1,0,0},{0,1,0,1,1,0,0,0,0,1,0},{1,0,1,1,1,1,1,0,0,0,1},{0,0,1,0,1,1,0,0,1,0,0},{1,0,0,1,1,1,0,0,0,1,1},{0,1,0,1,1,0,0,0,1,0,0},{0,1,1,0,1,0,1,1,1,0,0},{1,1,0,1,1,1,0,0,0,0,0},{1,0,1,1,0,0,0,1,0,0,1}};
+    auto out = solution.numEnclaves(nums);
     std::cout << out << "\n";
     return 0;
 }
