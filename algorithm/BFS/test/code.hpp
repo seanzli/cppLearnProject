@@ -1,43 +1,32 @@
-#include <vector>
+#include <string>
 
 using namespace std;
 class Solution {
-    int res;
-    bool addMark(vector<int>& mark, const string& str) {
-        bool checked = true;
-        for (const auto& c : str) {
-            ++mark[c - 'a'];
-            if (mark[c - 'a'] > 1)
-                checked = false;
+    bool isPalindrome(const string& str, int left, int right) {
+        while (left < right) {
+            if (str[left++] != str[right--])
+                return false;
         }
-        return checked;
+        return true;
     }
-    void subMark(vector<int>& mark, const string& str) {
-        for (const auto& c : str)
-            --mark[c - 'a'];
-    }
-    void dfs(const vector<string>& arr, int idx, vector<int>& mark, int count) {
-        if (idx == arr.size()) {
-            res = max(res, count);
-            return;
+    bool helper(const string& a, const string& b) {
+        int left = 0, right = b.size() - 1;
+        while (left < a.size() && right >= 0) {
+            if (isPalindrome(b, left, right))
+                return true;
+            if (isPalindrome(a, left, right))
+                return true;
+            if (a[left] == b[right]) {
+                left++;
+                right--;
+            } else {
+                return false;
+            }
         }
-        if (res == 26)
-            return;
-        dfs(arr, idx + 1, mark, count);
-        bool valid = addMark(mark, arr[idx]);
-        if (valid) {
-            count += arr[idx].size();
-            dfs(arr, idx + 1, mark, count);
-        }
-        subMark(mark, arr[idx]);
-        return;
+        return false;
     }
 public:
-    int maxLength(vector<string>& arr) {
-        vector<int> mark(26, 0);
-        res = 0;
-        int count = 0;
-        dfs(arr, 0, mark, count);
-        return res;
+    bool checkPalindromeFormation(string a, string b) {
+        return helper(a, b) || helper(b, a);
     }
 };
