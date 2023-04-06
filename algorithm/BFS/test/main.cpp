@@ -5,8 +5,8 @@ int main()
 {
     Solution solution;
     // vector<vector<int>> nums = {{1,6,1},{5,8,7},{1,9,1}};
-    vector<string> str = {"un", "iq", "ue"};
-    auto out = solution.maxLength(str);
+    vector<string> str = {"/a","/a/b","/c/d","/c/d/e","/c/f"};
+    auto out = solution.removeSubfolders(str);
     // std::cout << out << "\n";
     return 0;
 }
